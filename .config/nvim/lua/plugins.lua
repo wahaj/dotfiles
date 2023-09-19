@@ -1,3 +1,11 @@
+-- Ensure Plug is installed
+local data_path = vim.fn.stdpath('data') .. '/site'
+if vim.fn.empty(vim.fn.glob(data_path .. '/autoload/plug.vim')) > 0 then
+    vim.fn.system({'curl', '-fLo', data_path .. '/autoload/plug.vim', '--create-dirs',
+    'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'})
+    vim.cmd 'autocmd VimEnter * PlugInstall --sync | source $MYVIMRC'
+end
+
 -- Vim Plugins using vim-plug
 local Plug = vim.fn['plug#']
 -- Initialize vim-plug
