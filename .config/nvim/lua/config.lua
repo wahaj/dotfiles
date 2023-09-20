@@ -12,7 +12,6 @@ vim.g.ale_linters = {
     ['cpp'] = { 'clang' },
     ['css'] = { 'prettier' },
     ['dockerfile'] = { 'hadolint' },
-    ['go'] = { 'golangci-lint' },
     ['html'] = { 'tidy' },
     ['javascript'] = { 'prettier' },
     ['json'] = { 'jq' },
@@ -23,7 +22,6 @@ vim.g.ale_linters = {
     ['terraform'] = { 'terraform' },
     ['tsx'] = { 'prettier' },
     ['typescript'] = { 'prettier' },
-    ['vim'] = { 'vint' },
     ['yaml'] = { 'yamllint' },
 }
 
@@ -117,68 +115,6 @@ vim.g.copilot_assume_mapped = true
 vim.g.copilot_tab_fallback = ""
 
 
-
--- [[ Configure Mason ]]
--- See `:help mason`
-require('mason').setup()
-require('mason-lspconfig').setup({
-	ensure_installed = { 'ansiblels', 'bashls', 'clangd', 'dockerls', 'eslint', 'gopls', 'html', 'jsonls', 'lua_ls', 'pyright', 'rust_analyzer', 'tailwindcss', 'terraformls', 'tsserver', 'vimls', 'yamlls' },
-})
-
--- [[ Configure LSP ]]
--- See `:help nvim-lspconfig`
--- See `:help lspconfig`
-local lspconfig = require('lspconfig')
-lspconfig.ansiblels.setup{}
-lspconfig.bashls.setup{}
-lspconfig.clangd.setup{}
-lspconfig.dockerls.setup{}
-lspconfig.eslint.setup{}
-lspconfig.gopls.setup{}
-lspconfig.html.setup{}
-lspconfig.jsonls.setup{}
-lspconfig.lua_ls.setup{
-	on_init = function(client)
-		client.config.settings = vim.tbl_deep_extend(
-			'force',
-			client.config.settings.Lua or {},
-			{
-				Lua = {
-					runtime = {
-						version = 'LuaJIT',
-						path = vim.split(package.path, ';'),
-					},
-					diagnostics = {
-						globals = { 'vim' },
-					},
-					workspace = {
-						library = {
-							[vim.fn.expand('$VIMRUNTIME/lua')] = true,
-							[vim.fn.expand('$VIMRUNTIME/lua/vim/lsp')] = true,
-						},
-					},
-				},
-			}
-		)
-	end
-}
-lspconfig.pyright.setup{}
-lspconfig.rust_analyzer.setup{}
-lspconfig.tailwindcss.setup{}
-lspconfig.terraformls.setup{}
-lspconfig.tsserver.setup{}
-lspconfig.vimls.setup{}
-lspconfig.yamlls.setup{}
-
-local lsp_defaults = lspconfig.util.default_config
-
-lsp_defaults.capabilities = vim.tbl_extend(
-	'force',
-	lsp_defaults.capabilities,
-	require('cmp_nvim_lsp').default_capabilities()
-)
-
-
 -- [[ Configure CMP ]]
 -- See `:help nvim-cmp`
 local cmp = require('cmp')
@@ -262,18 +198,24 @@ cmp.setup({
 		['<C-f>'] = cmp.mapping.scroll_docs(4),
 		['<C-Space>'] = cmp.mapping.complete(),
 		['<C-e>'] = cmp.mapping.abort(),
-		['<CR>'] = cmp.mapping.confirm { 
+		['<CR>'] = cmp.mapping.confirm {
 			behavior = cmp.ConfirmBehavior.Replace,
-			select = true 
+			select = true
 		},
 		['<Tab>'] = cmp.mapping(function(fallback)
 --			if cmp.visible() and has_words_before() then
---				cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
 			if cmp.visible() then
-				cmp.select_next_item()
+--				cmp.select_next_item()
+                local entry = cmp.get_selected_entry()
+				cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
+--                if not entry then
+--                    cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
+--                else
+--                    cmp.confirm()
+--                end
 			elseif luasnip.expand_or_jumpable() then
 				luasnip.expand_or_jump()
-			else
+            else
 				local copilot_keys = vim.fn["copilot#Accept"]()
 				if copilot_keys ~= "" then
 					vim.api.nvim_feedkeys(copilot_keys, "i", true)
@@ -328,6 +270,47 @@ cmp.setup.cmdline(':', {
 		{ name = 'cmdline' }
 	}),
 })
+
+
+-- [[ Configure Mason ]]
+-- See `:help mason`
+local servers = {'ansiblels', 'bashls', 'clangd', 'dockerls', 'eslint', 'html', 'jsonls', 'lua_ls', 'pyright', 'rust_analyzer', 'tailwindcss', 'tsserver', 'vimls', 'yamlls'}
+require('mason').setup()
+require('mason-lspconfig').setup({
+	ensure_installed = servers
+})
+
+-- [[ Configure LSP ]]
+-- See `:help nvim-lspconfig`
+-- See `:help lspconfig`
+local lspconfig = require('lspconfig')
+
+-- Enable some language servers with the additional completion capabilities offered by nvim-cmp
+local capabilities = require('cmp_nvim_lsp').default_capabilities()
+for _, lsp in ipairs(servers) do
+    lspconfig[lsp].setup {
+        capabilities = capabilities,
+    }
+end
+
+-- Custom Server configs
+--
+-- Lua
+lspconfig.lua_ls.setup{
+	on_init = function(client)
+		client.config.settings = vim.tbl_deep_extend(
+			'force',
+			client.config.settings.Lua or {},
+			{
+				Lua = {
+					diagnostics = {
+						globals = { 'vim' },
+					},
+				},
+			}
+		)
+	end
+}
 
 
 -- [[ Configure Diagnostics ]]
