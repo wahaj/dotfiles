@@ -13,14 +13,14 @@ export XDG_CACHE_HOME="$HOME/.cache"
 export XDG_DATA_HOME="$HOME/.local/share"
 
 # Path to your oh-my-zsh installation.
-export ZSH="$XDG_DATA_HOME"/oh-my-zsh
+export ZSH="$HOME/.oh-my-zsh"
 
 ZSH_THEME="agnoster"
 
 HISTSIZE=6000
 SAVEHIST=6000
 
-plugins=(git docker archlinux )
+plugins=(git docker )
 
 source $ZSH/oh-my-zsh.sh
 
@@ -28,32 +28,6 @@ source $ZSH/oh-my-zsh.sh
 
 # Dotfiles Config
 alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
-
-
-
-# SSH Config
-SSH_ENV="$HOME/.ssh/agent-environment"
-
-function start_agent {
-    echo "Initialising new SSH agent..."
-    /usr/bin/ssh-agent | sed 's/^echo/#echo/' > "${SSH_ENV}"
-    echo succeeded
-    chmod 600 "${SSH_ENV}"
-    . "${SSH_ENV}" > /dev/null
-    /usr/bin/ssh-add;
-}
-
-# Source SSH settings, if applicable
-
-if [ -f "${SSH_ENV}" ]; then
-    . "${SSH_ENV}" > /dev/null
-    #ps ${SSH_AGENT_PID} doesn't work under cywgin
-    ps -ef | grep ${SSH_AGENT_PID} | grep ssh-agent$ > /dev/null || {
-        start_agent;
-    }
-else
-    start_agent;
-fi
 
 
 # export MANPATH="/usr/local/man:$MANPATH"
@@ -81,12 +55,7 @@ export _JAVA_OPTIONS=-Djava.util.prefs.userRoot="$XDG_CONFIG_HOME"/java
 # GCloud Export
 export USE_GKE_GCLOUD_AUTH_PLUGIN=True
 
-# User Aliases
-alias mysql-workbench=mysql-workbench --configdir="$XDG_DATA_HOME/mysql/workbench"
-
 # Path Exports
-export PATH="$PATH:$(yarn global bin)"
-
 export NVM_DIR="$HOME/.local/share/nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
