@@ -79,7 +79,7 @@ require('telescope').setup {
 }
 
 -- Enable telescope fzf natived
-require('telescope').load_extension('fzf')
+-- require('telescope').load_extension('fzf')
 
 
 -- [[ Configure Treesitter ]]
@@ -277,7 +277,7 @@ cmp.setup.cmdline(':', {
 local servers = {'ansiblels', 'bashls', 'clangd', 'dockerls', 'eslint', 'html', 'jsonls', 'lua_ls', 'pyright', 'rust_analyzer', 'tailwindcss', 'tsserver', 'vimls', 'yamlls'}
 require('mason').setup()
 require('mason-lspconfig').setup({
-	ensure_installed = servers
+--	ensure_installed = servers
 })
 
 -- [[ Configure LSP ]]
