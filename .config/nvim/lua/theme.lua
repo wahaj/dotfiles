@@ -39,4 +39,4 @@ require("catppuccin").setup({
 })
 --vim.cmd.colorscheme "catppuccin" -- Set colorscheme
 
-vim.cmd.colorscheme "gruvbox-material"
+vim.cmd.colorscheme "flexoki-dark"
