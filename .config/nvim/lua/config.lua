@@ -79,7 +79,7 @@ require('telescope').setup {
 }
 
 -- Enable telescope fzf natived
-require('telescope').load_extension('fzf')
+-- require('telescope').load_extension('fzf')
 
 
 -- [[ Configure Treesitter ]]

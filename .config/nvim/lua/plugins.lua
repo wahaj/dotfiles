@@ -20,6 +20,7 @@ Plug 'nvim-lualine/lualine.nvim'
 -- Colorscheme
 Plug('sainnhe/gruvbox-material', {as = 'gruvbox'})
 Plug('catppuccin/nvim', {as = 'catppuccin'})
+Plug('kepano/flexoki-neovim', {as = 'flexoki'})
 -- Icons
 Plug 'nvim-tree/nvim-web-devicons'
 
