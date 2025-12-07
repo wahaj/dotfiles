@@ -274,7 +274,7 @@ cmp.setup.cmdline(':', {
 
 -- [[ Configure Mason ]]
 -- See `:help mason`
-local servers = {'ansiblels', 'bashls', 'clangd', 'dockerls', 'eslint', 'html', 'jsonls', 'lua_ls', 'pyright', 'rust_analyzer', 'tailwindcss', 'tsserver', 'vimls', 'yamlls'}
+local servers = {'ansiblels', 'bashls', 'clangd', 'dockerls', 'eslint', 'html', 'jsonls', 'lua_ls', 'pyright', 'rust_analyzer', 'tailwindcss', 'ts_ls', 'vimls', 'yamlls'}
 require('mason').setup()
 require('mason-lspconfig').setup({
 	ensure_installed = servers

@@ -23,7 +23,6 @@ o.ignorecase = true -- Ignore case
 o.clipboard = 'unnamedplus' -- Use system clipboard
 o.mouse = 'a' -- Enable mouse support
 o.ttyfast = true -- Enable fast terminal
-o.noshowmode = true -- Hide mode indicator
 o.ruler = true -- Show cursor position
 o.splitright = true -- Split right
 o.hidden = true -- Enable background buffers
@@ -40,7 +39,7 @@ o.updatetime = 300 -- Faster completion
 -- This setting must be set before ALE is loaded.
 -- You should not turn this setting on if you wish to use ALE as a completion
 -- source for other completion plugins, like Deoplete.
-o.ale_completion_enabled = true
+-- o.ale_completion_enabled = true
 
 
 -- Window-local Options
